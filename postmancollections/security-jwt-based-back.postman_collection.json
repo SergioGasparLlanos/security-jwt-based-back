@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "c3872298-f6b5-4f94-9809-63e4707cd398",
+		"name": "security-jwt-based-back",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23883745"
+	},
+	"item": [
+		{
+			"name": "register-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"someone@somehting.com\",\n    \"password\": \"123456\",\n    \"lastname\": \"lastname\",\n    \"firstname\": \"firstname\",\n    \"country\": \"country\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authentication/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentication",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"someone@somehting.com\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authentication/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-secured-welcome",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJhcGVsbGlkb1VzdWFyaW8iOiJsYXN0bmFtZSIsIm5vbWJyZVVzdWFyaW8iOiJmaXJzdG5hbWUiLCJzdWIiOiJzb21lb25lQHNvbWVodGluZy5jb20iLCJpYXQiOjE3MDg3MDgxMDYsImV4cCI6MTcwODcwODE2Nn0.V-SzpD1rhoZFqAfbH_CqEYptwTPjjhDGdavuKjWnmH6YwWLePmFMEPtWaaeN0zeu",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/demo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"demo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
