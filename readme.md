@@ -12,57 +12,67 @@ This is a Spring Boot project that shows how to secure resources using authentic
 ## Installation
 Follow these steps to install and run the project:
 
-    1. Navigate to the project directory: `cd your-repo`
-    2. Build the project using Maven:: `mvn clean install`
-    3. Run the project: `mvn spring-boot:run`
-    4. Test the API Rest using postman or another application at `http://localhost:8080`.
+1. Navigate to the project directory: `cd your-repo`
+2. Build the project using Maven: `mvn clean install`
+3. Run the project: `mvn spring-boot:run`
+4. Test the API Rest using postman or another application at `http://localhost:8080`.
 
 ## Usage
-    1. Start the spring boot service
-    2. Consume the register user service to register a user into database. It is required to provide a username and password.
-    3. Consume the login service sending a request with username and password in the body.
-    4. In case that login was successfully it will response a JWT token.
-    5. Consume the welcome service sending a request with the JWT token in the authorization header.
-    6. When consuming the welcome service and the JWT token is valid a welcome message will be displayed.
-    7. When consuming the welcome service and the JWT token is not valid a forbidden response will displayed.
+ 1. Start the spring boot service.
+ 2. Register a user into database providing a username and password. The created user will have an administrator role. Use the `user registration service`.
+ 3. Login to the app by sending a request with username and password in the body. Use the `login service`.
+ 4. In case login was successful the response will show a jwt token. Copy that token.
+ 5. Paste the token into a new Authorization Header request.
+ 6. Consume the `administrators welcome service` and it will show a message for administrators with ok http status.
+ 7. Consume the `users welcome service` and it will not show any message with 403 forbidden http status because user rol is not administrator.
+ 8. Consume the `guests welcome service` and it will show a message for guests with ok http status because every role is a guest.
 
-## API Reference
+## Api Reference
 
-#### Endpoint to register a user
-
-```http
-  POST http://localhost:8080/authentication/register
-```
-Body request
-```javascript
-{
-    "username":"someone@somehting.com",
-    "password": "123456",
-    "lastname": "lastname",
-    "firstname": "firstname",
-    "country": "country"
-}
-```
-
-
-#### Endpoint to login and get a JWT token
+#### User registration service
 
 ```http
-  POST http://localhost:8080/authentication/login
+  POST http://localhost:8181/authentication/register
+  
+   Body
+   {
+      "username":"someone@somehting.com",
+      "password": "123456",
+      "lastname": "lastname",
+      "firstname": "firstname",
+      "country": "country"
+   }
 ```
 
-
-Body request
-```javascript
-{
-    "username": "someone@somehting.com",
-    "password":"123456"
-}
-```
-
-
-#### Endpoint to get a secured resource
+#### Login service
 
 ```http
-  GET http://localhost:8080/api/v1/demo
+  POST http://localhost:8181/authentication/login
+  
+   Body
+   {
+      "username": "someone@somehting.com",
+      "password":"123456"
+   }
 ```
+
+
+#### Administrators welcome service
+
+```http
+  GET http://localhost:8181/api/administrators/v1/welcome
+```
+
+#### Users welcome service
+
+```http
+  GET http://localhost:8181/api/users/v1/welcome
+```
+
+#### Guests welcome service
+
+```http
+  GET http://localhost:8181/api/guests/v1/welcome
+```
+
+### Thanks for reading me!
