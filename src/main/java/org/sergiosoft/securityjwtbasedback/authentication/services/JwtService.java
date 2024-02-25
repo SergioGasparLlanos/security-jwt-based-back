@@ -1,11 +1,11 @@
 package org.sergiosoft.securityjwtbasedback.authentication.services;
 
-
-import org.sergiosoft.securityjwtbasedback.authentication.entities.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.sergiosoft.securityjwtbasedback.authentication.entities.UserEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +18,21 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
+    @Value("${jwt-secret-key}")
+    private String jwtSecretKey;
+
 
     public String getToken(UserDetails user) {
 
         Map<String, String> extraClaims = new HashMap<>();
-        extraClaims.put("nombreUsuario", ((UserEntity) user).getFirstname());
-        extraClaims.put("apellidoUsuario", ((UserEntity) user).getLastname());
+        extraClaims.put("userFirstname", ((UserEntity) user).getFirstname());
+        extraClaims.put("userLastname", ((UserEntity) user).getLastname());
 
-        return getToken(extraClaims, user);
+        return generateToken(extraClaims, user);
     }
 
-    private String getToken(Map<String, String> extraClaims, UserDetails user) {
-        int minutesExpire = 1;
+    private String generateToken(Map<String, String> extraClaims, UserDetails user) {
+        int minutesExpire = 3;
         return Jwts
                 .builder()
                 .claims(extraClaims)
@@ -42,7 +44,7 @@ public class JwtService {
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
